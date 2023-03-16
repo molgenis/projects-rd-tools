@@ -11,12 +11,10 @@
 #////////////////////////////////////////////////////////////////////////////
 
 import molgenis.client as molgenis
-from rdtools.utils import print2
+from . utils import print2
 from os import path
 import numpy as np
-import mimetypes
 import tempfile
-import json
 import csv
 
 class Molgenis(molgenis.Session):
@@ -103,48 +101,4 @@ class Molgenis(molgenis.Session):
           print2('Failed to import data into',pkg_entity,'(',response.status_code,')')
         else:
           print2('Imported data into',pkg_entity)
-      return response
-
-  def importFile(self, file):
-    """Import a file into Molgenis
-    Import a file (pdf, txt, docx, etc.) into the files table. Content type
-    and size is automatically determined.
-    
-    @param file location and name of the file to import
-    
-    @section
-    If the file was successfully imported, you will receive information about
-    the file and the location in the database. Use the file identifier to set
-    additional permissions. This can be done using the molgenis commander.
-    
-    ```zsh
-    mcmd config set host
-    mcmd give \ 
-      --user <user> <read|view|write|...> \
-      --entity <file-identifier-in-database> \
-      --package sys_FileMetaa
-    ```
-    
-    @return a status message with import metadata
-    """
-    with open(file, 'rb') as stream:
-      data = stream.read()
-      stream.close()
-    
-    headers = self._headers.token_header
-    headers['x-molgenis-filename'] = file
-    headers['Content-Type'] = mimetypes.guess_type(file)[0]
-    headers['Content-Size'] = str(path.getsize(file))
-  
-    url = f"{self._root_url}api/files"
-    response = self._session.post(url=url, headers=headers, data=data)
-
-    if response.status_code // 100 == 2:
-      result = json.loads(response.text)
-      print2(response.status_code)
-      print2(result)
-      return response
-    else:
-      print2(f"Failed to import {file}")
-      print2(response.status_code)
       return response
