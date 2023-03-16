@@ -1,0 +1,19 @@
+{
+  "name": "rdtools",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/molgenis/projects-rd-tools",
+  "author": "davidruvolo51",
+  "license": "MIT",
+  "scripts": {
+    "docs": "tox -e docs",
+    "build": "tox -e build",
+    "test:deploy": "tox -e publish",
+    "deploy": "tox -e publish",
+    "bumpversion:patch": "bump2version --current-version 0.1.0 patch package.json yamlemxconvert/__version__.py setup.py --allow-dirty",
+    "bumpversion:minor": "bump2version --current-version 0.1.0 minor package.json src/rdtools/__version__.py setup.py",
+    "bumpversion:major": "bump2version --current-version 0.1.0 major package.json src/rdtools/__version__.py setup.py",
+    "deploy:prod": "twine upload dist/*",
+    "deploy:test": "twine upload --repository testpypi dist/*"
+  }
+}
