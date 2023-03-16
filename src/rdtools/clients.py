@@ -1,5 +1,5 @@
 
-from .utils import print2
+from rdtools.utils import print2
 from os import path
 import numpy as np
 import tempfile
