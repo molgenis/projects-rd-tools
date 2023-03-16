@@ -36,7 +36,7 @@
 
 from oauthlib.oauth2 import LegacyApplicationClient
 from requests_oauthlib import OAuth2Session
-from rdtools.utils import print2
+from . utils import print2
 
 class Alissa:
   """Alissa Interpret Public API (v5.3)"""
