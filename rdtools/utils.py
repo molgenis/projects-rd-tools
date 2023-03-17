@@ -26,8 +26,8 @@ def print2(*args):
   message = ' '.join(map(str, args))
   print(f'[{now()}] {message}')
   
-class logger:
-  def __init__(self, logname: str = 'cosas-daily-import', silent=False, printWithTime=True):
+class Logger:
+  def __init__(self, logname: str=None, silent=False, printWithTime=True):
     """Cosas Logger
     Keep records of all processing steps and summarize the daily imports
 
@@ -39,7 +39,7 @@ class logger:
     self.logname = logname
     self.log = {}
     self.currentStep = {}
-    self.processingStepLogs = []
+    self.stepLogs = []
     self._printWithTime = printWithTime
     self.tz = 'Europe/Amsterdam'
     self.hhmmss = '%H:%M:%S'
@@ -87,7 +87,7 @@ class logger:
     self.log['steps'] = ','.join(map(str, self.log['steps']))
     self._print('Logging stopped (elapsed time:', self.log['elapsedTime'], 'seconds')
 
-  def startProcessingStepLog(self, type: str = None, name: str = None, tablename: str = None):
+  def startStep(self, type: str = None, name: str = None, tablename: str = None):
     """Start a new log for a processing step
     Create a new logging object for an individual step such as transforming
     data or importing data.
@@ -96,7 +96,7 @@ class logger:
     @param name : name of the current step (e.g., 'import-data', 'save-data')
     @param tablename : database table the current step relates to
     """
-    stepID = len(self.processingStepLogs) + 1
+    stepID = len(self.stepLogs) + 1
     self.currentStep = {
       'identifier': int(f"{self._now(strftime='%Y%m%d')}{stepID}"),
       'date': self._now(strftime='%Y-%m-%d'),
@@ -111,11 +111,11 @@ class logger:
     }
     self._print(self.logname, ': starting step', name)
 
-  def stopProcessingStepLog(self):
+  def stopStep(self):
     """Stop a log for a processing step"""
     self.__stoptime__(name='currentStep')
     self.log['steps'].append(self.currentStep['identifier'])
-    self.processingStepLogs.append(self.currentStep)
+    self.stepLogs.append(self.currentStep)
     self._print(
       self.logname, ': finished step',
       self.currentStep['name'],'in',
