@@ -1,6 +1,6 @@
 {
   "name": "rdtools",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "repository": "https://github.com/molgenis/projects-rd-tools",
   "author": "davidruvolo51",
@@ -8,11 +8,11 @@
   "scripts": {
     "py:build": "rm -rf dist/* && python setup.py sdist bdist_wheel",
     "py:check": "twine check dist/*",
-    "py:install": "pip install dist/rdtools-0.0.0.tar.gz",
+    "py:install": "pip install dist/rdtools-0.1.0.tar.gz",
     "deploy:prod": "twine upload dist/*",
     "deploy:test": "twine upload --repository testpypi dist/*",
-    "bump:patch": "bump2version --current-version 0.0.0 patch setup.py README.md package.json rdtools/__version__.py --allow-dirty",
-    "bump:minor": "bump2version --current-version 0.0.0 minor setup.py README.md package.json rdtools/__version__.py",
-    "bump:major": "bump2version --current-version 0.0.0 major setup.py README.md package.json rdtools/__version__.py"
+    "bump:patch": "bump2version --current-version 0.1.0 patch setup.py README.md package.json rdtools/__version__.py --allow-dirty",
+    "bump:minor": "bump2version --current-version 0.1.0 minor setup.py README.md package.json rdtools/__version__.py",
+    "bump:major": "bump2version --current-version 0.1.0 major setup.py README.md package.json rdtools/__version__.py"
   }
 }

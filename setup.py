@@ -9,7 +9,7 @@ URL = 'https://github.com/molgenis/projects-rd-tools'
 EMAIL = 'd.c.ruvolo@gmail.com'
 AUTHOR = 'David Ruvolo'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.0.0'
+VERSION = '0.1.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
