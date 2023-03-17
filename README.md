@@ -13,7 +13,7 @@ This package includes a number of methods and class extensions that are commonly
 For now, this package is only released on GitHub. To install it, use the following command.
 
 ```py
-pip install https://github.com/molgenis/projects-rd-tools/dist/rdtools-0.1.0.tar.gz
+pip install https://github.com/molgenis/projects-rd-tools/dist/rdtools-0.0.0.tar.gz
 ```
 
 ### Using rdtools
