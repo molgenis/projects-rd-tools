@@ -1,21 +1,123 @@
-"""
-    Setup file for rdtools.
-    Use setup.cfg to configure your project.
+from setuptools import find_packages, setup, Command
+import io, os, sys
+from shutil import rmtree
 
-    This file was generated with PyScaffold 4.4.
-    PyScaffold helps you to put up the scaffold of your new Python project.
-    Learn more under: https://pyscaffold.org/
-"""
-from setuptools import setup
+# Package meta-data.
+NAME = 'rdtools'
+DESCRIPTION = 'Tools for managing RD databases'
+URL = 'https://github.com/molgenis/projects-rd-tools'
+EMAIL = 'd.c.ruvolo@gmail.com'
+AUTHOR = 'David Ruvolo'
+REQUIRES_PYTHON = '>=3.6.0'
+VERSION = '0.0.0'
 
-if __name__ == "__main__":
-  try:
-    setup()
-  except:  # noqa
-    print(
-      "\n\nAn error occurred while building the project, "
-      "please ensure you have the most updated version of setuptools, "
-      "setuptools_scm and wheel with:\n"
-      "   pip install -U setuptools setuptools_scm wheel\n\n"
-    )
-    raise
+# What packages are required for this module to be executed?
+REQUIRED = [
+  'molgenis-py-client >= 2.4.0',
+  'pytz >= 2022.7.1',
+  'numpy >= 1.24.2',
+  'requests_oauthlib >= 1.3.1',
+  'oauthlib >= 3.2.2',
+]
+
+# What packages are optional?
+EXTRAS = {
+  # 'fancy feature': ['django'],
+}
+
+# The rest you shouldn't have to touch too much :)
+# ------------------------------------------------
+# Except, perhaps the License and Trove Classifiers!
+# If you do change the License, remember to change the Trove Classifier for that!
+
+here = os.path.abspath(os.path.dirname(__file__))
+
+# Import the README and use it as the long-description.
+# Note: this will only work if 'README.md' is present in your MANIFEST.in file!
+try:
+  with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    LONG_DESCRIPTION = '\n' + f.read()
+except FileNotFoundError:
+  long_description = DESCRIPTION
+
+# Load the package's __version__.py module as a dictionary.
+about = {}
+if not VERSION:
+  project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
+  with open(os.path.join(here, project_slug, '__version__.py')) as f:
+    exec(f.read(), about)
+else:
+  about['__version__'] = VERSION
+
+
+class UploadCommand(Command):
+  """Support setup.py upload."""
+
+  description = 'Build and publish the package.'
+  user_options = []
+
+  @staticmethod
+  def status(s):
+    """Prints things in bold."""
+    print('\033[1m{0}\033[0m'.format(s))
+
+  def initialize_options(self):
+    pass
+
+  def finalize_options(self):
+    pass
+
+  def run(self):
+    try:
+      self.status('Removing previous builds…')
+      rmtree(os.path.join(here, 'dist'))
+    except OSError:
+        pass
+
+    self.status('Building Source and Wheel (universal) distribution…')
+    os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
+
+    self.status('Uploading the package to PyPI via Twine…')
+    os.system('twine upload dist/*')
+
+    self.status('Pushing git tags…')
+    os.system('git tag v{0}'.format(about['__version__']))
+    os.system('git push --tags')
+    sys.exit()
+
+setup(
+  name = NAME,
+  version = VERSION,
+  description=DESCRIPTION,
+  long_description=LONG_DESCRIPTION,
+  long_description_content_type='text/markdown',
+  author=AUTHOR,
+  author_email=EMAIL,
+  license='MIT',
+  url=URL,
+  python_requires=REQUIRES_PYTHON,
+  packages = find_packages(
+    where='rdtools',
+    exclude=['tests','*.tests','*.tests.*', 'tests.*'],
+  ),
+  install_requires = REQUIRED,
+  classifiers=[
+    # Trove classifiers
+    # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Programming Language :: Python :: Implementation :: PyPy',
+    'Intended Audience :: Science/Research'
+  ],
+  # $ setup.py publish support.
+  cmdclass={
+    'upload': UploadCommand,
+  },
+)
