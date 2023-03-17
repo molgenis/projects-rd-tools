@@ -48,8 +48,8 @@ class logger:
 
   def _now(self, strftime=None):
     if strftime:
-      return datetime.now(tz=pytz.timezone(self.tz)).strftime(strftime)
-    return datetime.now(tz=pytz.timezone(self.tz))
+      return datetime.now(tz=timezone(self.tz)).strftime(strftime)
+    return datetime.now(tz=timezone(self.tz))
 
   def _print(self, *message):
     if not self.silent:
